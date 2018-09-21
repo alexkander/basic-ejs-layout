@@ -4,7 +4,7 @@ basic-express-ejs-layout
 [![npm version](https://badge.fury.io/js/basic-express-ejs-layout.svg)](https://badge.fury.io/js/basic-express-ejs-layout) [![Build Status](https://travis-ci.org/arondn2/basic-express-ejs-layout.svg?branch=master)](https://travis-ci.org/arondn2/basic-express-ejs-layout)
 [![Coverage Status](https://coveralls.io/repos/github/arondn2/basic-express-ejs-layout/badge.svg?branch=master)](https://coveralls.io/github/arondn2/basic-express-ejs-layout?branch=master)
 
-Template system for express/loopback 3.x modules
+Template system based on ejs for express/loopback 3.x modules
 
 ## Installation
 

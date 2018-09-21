@@ -1,7 +1,7 @@
 {
   "name": "basic-express-ejs-layout",
   "version": "0.0.1",
-  "description": "Template system for express/loopback 3.x modules",
+  "description": "Template system based on ejs for express/loopback 3.x modules",
   "main": "index.js",
   "scripts": {
     "vpublish": "npm version patch -m \"Version %s\" && npm publish",
