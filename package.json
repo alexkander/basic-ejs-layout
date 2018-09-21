@@ -1,5 +1,5 @@
 {
-  "name": "node-module-template",
+  "name": "node-module-base",
   "version": "0.0.1",
   "description": "Template to create node modules repositories",
   "main": "index.js",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/arondn2/node-module-template.git"
+    "url": "git://github.com/arondn2/node-module-base.git"
   },
   "keywords": [
     "nodejs",
@@ -23,7 +23,7 @@
   "author": "Alex J. Rondon <arondn2@gmail.com> (https://github.com/arondn2)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/arondn2/node-module-template/issues"
+    "url": "https://github.com/arondn2/node-module-base/issues"
   },
   "devDependencies": {
     "chai": "^4.1.2",
