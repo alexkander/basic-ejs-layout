@@ -1,7 +1,7 @@
 {
-  "name": "node-module-base",
+  "name": "basic-express-ejs-layout",
   "version": "0.0.1",
-  "description": "Template to create node modules repositories",
+  "description": "Template system for express/loopback 3.x modules",
   "main": "index.js",
   "scripts": {
     "vpublish": "npm version patch -m \"Version %s\" && npm publish",
@@ -13,17 +13,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/arondn2/node-module-base.git"
+    "url": "git://github.com/arondn2/basic-express-ejs-layout.git"
   },
   "keywords": [
     "nodejs",
     "template",
+    "ejs",
+    "express",
+    "loopback",
+    "layout",
     "modules"
   ],
   "author": "Alex J. Rondon <arondn2@gmail.com> (https://github.com/arondn2)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/arondn2/node-module-base/issues"
+    "url": "https://github.com/arondn2/basic-express-ejs-layout/issues"
   },
   "devDependencies": {
     "chai": "^4.1.2",
@@ -37,5 +41,7 @@
     "examples",
     "tests"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "ejs": "^2.6.1"
+  }
 }
