@@ -1,14 +1,14 @@
-node-ejs-layout
+basic-ejs-layout
 ===============
 
-[![npm version](https://badge.fury.io/js/node-ejs-layout.svg)](https://badge.fury.io/js/node-ejs-layout) [![Build Status](https://travis-ci.org/arondn2/node-ejs-layout.svg?branch=master)](https://travis-ci.org/arondn2/node-ejs-layout)
-[![Coverage Status](https://coveralls.io/repos/github/arondn2/node-ejs-layout/badge.svg?branch=master)](https://coveralls.io/github/arondn2/node-ejs-layout?branch=master)
+[![npm version](https://badge.fury.io/js/basic-ejs-layout.svg)](https://badge.fury.io/js/basic-ejs-layout) [![Build Status](https://travis-ci.org/arondn2/basic-ejs-layout.svg?branch=master)](https://travis-ci.org/arondn2/basic-ejs-layout)
+[![Coverage Status](https://coveralls.io/repos/github/arondn2/basic-ejs-layout/badge.svg?branch=master)](https://coveralls.io/github/arondn2/basic-ejs-layout?branch=master)
 
-Template system based on ejs for express/loopback 3.x modules
+Template system based on EJS for express/loopback 3.x modules
 
 ## Installation
 
-`npm install node-ejs-layout --save`
+`npm install basic-ejs-layout --save`
 
 ## Usage
 
@@ -18,7 +18,7 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore expedita tot
 
 If you have any kind of trouble with it, just let me now by raising an issue on the GitHub issue tracker here:
 
-https://github.com/arondn2/node-ejs-layout/issues
+https://github.com/arondn2/basic-ejs-layout/issues
 
 Also, you can report the orthographic errors in the READMEs files or comments. Sorry for that, English is not my main language.
 
