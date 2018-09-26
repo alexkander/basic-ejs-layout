@@ -42,6 +42,7 @@
     "tests"
   ],
   "dependencies": {
-    "ejs": "^2.6.1"
+    "ejs": "^2.6.1",
+    "lodash": "^4.17.11"
   }
 }
