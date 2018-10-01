@@ -9,7 +9,7 @@ const supertestp = require('supertest-as-promised');
 
 const Layout = require('..');
 
-describe('render', () => {
+describe('Layout', () => {
 
   describe('Layout.validateFilePath', () => {
 

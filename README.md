@@ -15,12 +15,11 @@ Template system based on EJS for express/loopback 3.x modules
 #### Include
 ```js
 var Layout = require('basic-ejs-layout');
-
 ```
 
 #### `new Layout.get(viewdir = '', locals = {})`;
 
-Create or get a instance to render views.
+Create a instance to render views.
 
 ##### Arguments
  Name      | Type      | Description
