@@ -1,6 +1,6 @@
 {
   "name": "basic-ejs-layout",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Template system based on ejs for nodejs/express/loopback 3.x modules",
   "main": "index.js",
   "scripts": {
