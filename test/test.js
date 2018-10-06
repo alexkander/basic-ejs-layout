@@ -13,29 +13,27 @@ describe('Layout', () => {
 
   describe('Layout.validateFilePath', () => {
 
-    it('is invalid filePath', (done) => {
+    it('is invalid filePath', () => {
       try {
         Layout.validateFilePath();
       } catch (e) {
         expect(e.code).to.equal('INVALID_FILEPATH');
       }
-      done();
     });
 
-    it('filePath isnt a ejs file', (done) => {
+    it('filePath isnt a ejs file', () => {
       try {
         Layout.validateFilePath('file.html');
       } catch (e) {
         expect(e.code).to.equal('FILEPATH_IS_NOT_EJS');
       }
-      done();
     });
 
   });
 
   describe('Layout.prototype.render', () => {
 
-    it('basic', (done) => {
+    it('basic', () => {
 
       const layout = new Layout(path.resolve(__dirname, 'views'));
 
@@ -46,11 +44,9 @@ describe('Layout', () => {
       const resultMustBe = fs.readFileSync(fileapthHTml, 'utf8');
       expect(result).to.equal(resultMustBe);
 
-      done();
-
     });
 
-    it("file doesn't exists", (done) => {
+    it("file doesn't exists", () => {
 
       const layout = new Layout(path.resolve(__dirname, 'views'));
 
@@ -62,7 +58,6 @@ describe('Layout', () => {
         assert(false, 'a error must be throwed');
       } catch (err) {
         expect(err.code).to.equal('ENOENT');
-        done();
       }
 
     });
@@ -71,7 +66,7 @@ describe('Layout', () => {
 
   describe('Layout.prototype.parent', () => {
 
-    it('basic', (done) => {
+    it('basic', () => {
 
       const layout = new Layout(path.resolve(__dirname, 'views'));
 
@@ -82,7 +77,6 @@ describe('Layout', () => {
       const resultMustBe = fs.readFileSync(fileapthHTml, 'utf8');
 
       expect(result).to.equal(resultMustBe);
-      done();
 
     });
 
@@ -90,7 +84,7 @@ describe('Layout', () => {
 
   describe('Layout.prototype.include', () => {
 
-    it('basic', (done) => {
+    it('basic', () => {
 
       const layout = new Layout(path.resolve(__dirname, 'views'));
 
@@ -101,7 +95,6 @@ describe('Layout', () => {
       const resultMustBe = fs.readFileSync(fileapthHTml, 'utf8');
 
       expect(result).to.equal(resultMustBe);
-      done();
 
     });
 
@@ -152,9 +145,8 @@ describe('Layout', () => {
 
     });
 
-    after((done) => {
+    after(() => {
       server.close();
-      done();
     });
 
   });
