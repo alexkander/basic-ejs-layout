@@ -21,7 +21,7 @@ describe('Layout', () => {
       }
     });
 
-    it('filePath isnt a ejs file', () => {
+    it("filePath isn't a ejs file", () => {
       try {
         Layout.validateFilePath('file.html');
       } catch (e) {
@@ -35,10 +35,10 @@ describe('Layout', () => {
 
     it('basic', () => {
 
-      const layout = new Layout(path.resolve(__dirname, 'views'));
+      const layout = new Layout();
 
       const filepathBase = '01-render';
-      const fileapthEjs  = filepathBase + '.ejs';
+      const fileapthEjs  = path.resolve(__dirname, 'views', filepathBase + '.ejs');
       const fileapthHTml = path.resolve(__dirname, 'views', filepathBase + '.html');
       const result       = layout.render(fileapthEjs, {}, {});
       const resultMustBe = fs.readFileSync(fileapthHTml, 'utf8');
@@ -48,10 +48,10 @@ describe('Layout', () => {
 
     it("file doesn't exists", () => {
 
-      const layout = new Layout(path.resolve(__dirname, 'views'));
+      const layout = new Layout();
 
       const filepathBase = 'no-exiting-file';
-      const fileapthEjs  = filepathBase + '.ejs';
+      const fileapthEjs  = path.resolve(__dirname, 'views', filepathBase + '.ejs');
 
       try {
         layout.render(fileapthEjs, {}, {});
@@ -68,10 +68,10 @@ describe('Layout', () => {
 
     it('basic', () => {
 
-      const layout = new Layout(path.resolve(__dirname, 'views'));
+      const layout = new Layout();
 
       const filepathBase = '02-parent';
-      const fileapthEjs  = filepathBase + '.ejs';
+      const fileapthEjs  = path.resolve(__dirname, 'views', filepathBase + '.ejs');
       const fileapthHTml = path.resolve(__dirname, 'views', filepathBase + '.html');
       const result       = layout.render(fileapthEjs, { layout }, {});
       const resultMustBe = fs.readFileSync(fileapthHTml, 'utf8');
@@ -86,10 +86,10 @@ describe('Layout', () => {
 
     it('basic', () => {
 
-      const layout = new Layout(path.resolve(__dirname, 'views'));
+      const layout = new Layout();
 
       const filepathBase = '03-include';
-      const fileapthEjs  = filepathBase + '.ejs';
+      const fileapthEjs  = path.resolve(__dirname, 'views', filepathBase + '.ejs');
       const fileapthHTml = path.resolve(__dirname, 'views', filepathBase + '.html');
       const result       = layout.render(fileapthEjs, { layout }, {});
       const resultMustBe = fs.readFileSync(fileapthHTml, 'utf8');
@@ -101,30 +101,32 @@ describe('Layout', () => {
   });
 
   describe('engine setup ok', () => {
-    const api = supertestp('http://localhost:3000');
 
     let forceTransformReturn = true;
     const app = express();
-    let server;
+    let api, server;
 
+    app.set('views', path.resolve(__dirname, 'views'));
     app.set('view engine', 'ejs');
     app.engine('ejs', Layout.engine({}, (locals, layout) => {
       if (forceTransformReturn) return locals;
     }));
 
     before((done) => {
-      server = app.listen(3000, done);
+      server = app.listen((err) => {
+        api = supertestp('http://localhost:'+ server.address().port);
+        done(err);
+      });
     });
 
     it('response with a rendered view', (done) => {
 
-      const filepathBase = '04-engine';
-      const fileapthEjs  = filepathBase;
-      const fileapthHTml = path.resolve(__dirname, 'views', filepathBase + '.html');
+      const fileapthEjs = '04-engine';
+      const fileapthHTml = path.resolve(__dirname, 'views', fileapthEjs + '.html');
       const resultMustBe = fs.readFileSync(fileapthHTml, 'utf8');
 
       app.get('/', function (req, res) {
-        res.render(path.resolve(__dirname, 'views', fileapthEjs));
+        res.render(fileapthEjs);
       });
 
       api.get('/')
@@ -136,13 +138,12 @@ describe('Layout', () => {
     it('return ok when transform return undefined', (done) => {
 
       forceTransformReturn = false;
-      const filepathBase = '04-engine';
-      const fileapthEjs  = filepathBase;
-      const fileapthHTml = path.resolve(__dirname, 'views', filepathBase + '.html');
+      const fileapthEjs = '04-engine';
+      const fileapthHTml = path.resolve(__dirname, 'views', fileapthEjs + '.html');
       const resultMustBe = fs.readFileSync(fileapthHTml, 'utf8');
 
       app.get('/', function (req, res) {
-        res.render(path.resolve(__dirname, 'views', fileapthEjs));
+        res.render(fileapthEjs);
         forceTransformReturn = true;
       });
 
@@ -154,8 +155,7 @@ describe('Layout', () => {
 
     it('error rendering', (done) => {
 
-      const filepathBase = '05-error';
-      const fileapthEjs  = filepathBase;
+      const fileapthEjs = '05-error';
 
       app.get('/error', function (req, res) {
         res.render(path.resolve(__dirname, 'views', fileapthEjs), () => {

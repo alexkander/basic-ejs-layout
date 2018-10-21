@@ -17,26 +17,47 @@ Template system based on EJS for express/loopback 3.x modules
 var Layout = require('basic-ejs-layout');
 ```
 
-#### `new Layout(viewdir = '', globalsLocals = {})`;
+#### `new Layout(globalsLocals = {}, transform = null)`;
 
-Create a instance to render views.
+Create a instance to render views. The views will be render with at least
+`globalsLocals` vars. The `transform` params allow customize how vars will be available
+in the view.
 
 ##### Arguments
- Name             | Type      | Description
-------------------|-----------|-------------
- `viewdir`        | `string`  | Directory where find views.
- `globalsLocals`  | `object`  | Vars to include in rendering.
+ Name            | Type       | Description
+-----------------|------------|-------------
+ `globalsLocals` | `object`   | Vars to all views.
+ `transform`     | `function` | Function to custom how vars will be available
+in the view.
 
 ##### Example
 ```js
 // Option 1
 var layout = new Layout();
+
 // Option 2
-var layout = new Layout('./myviews');
-// Option 3
-var layout = new Layout('./myviews', {
+var layout = new Layout({
   var1: "one",
   var2: "two",
+});
+
+// Option 3
+app.engine('ejs', Layout.engine(function (locals, layout) {
+  return {
+    ly: layout,
+    vars: locals
+  };
+}));
+
+// Option 4
+var layout = new Layout({
+  var1: "one",
+  var2: "two",
+}, function (locals, layout) {
+  return {
+    ly: layout,
+    vars: locals
+  };
 });
 ```
 
@@ -136,9 +157,7 @@ Result:
 ```
 
 #### `layout.engine(globalsLocals = {}, transform = null)`
-Return a callback to set in a engine render. The views will be render with at least
-globalsLocals vars. the `transform` params allow custom how vars will be available
-in the view.
+Return a callback to set in a engine render. This method has the same contructor's params.
 
 ##### Arguments
  Name            | Type       | Description
