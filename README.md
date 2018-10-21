@@ -17,24 +17,24 @@ Template system based on EJS for express/loopback 3.x modules
 var Layout = require('basic-ejs-layout');
 ```
 
-#### `new Layout(viewdir = '', locals = {})`;
+#### `new Layout(viewdir = '', globalsLocals = {})`;
 
 Create a instance to render views.
 
 ##### Arguments
- Name      | Type      | Description
------------|-----------|-------------
- `viewdir` | `string`  | Directory where find views.
- `locals`  | `object`  | Vars to include in rendering.
+ Name             | Type      | Description
+------------------|-----------|-------------
+ `viewdir`        | `string`  | Directory where find views.
+ `globalsLocals`  | `object`  | Vars to include in rendering.
 
 ##### Example
 ```js
 // Option 1
-var layout = new Layout.get();
+var layout = new Layout();
 // Option 2
-var layout = new Layout.get('./myviews');
+var layout = new Layout('./myviews');
 // Option 3
-var layout = new Layout.get('./myviews', {
+var layout = new Layout('./myviews', {
   var1: "one",
   var2: "two",
 });
@@ -43,8 +43,8 @@ var layout = new Layout.get('./myviews', {
 #### `layout.render(filePath, locals = {}, ejsOpts = {})`
 
 Render a the file indicated in `filePath`, with vars in `locast`, and EJS options
-`ejsOpts`. Vars in `locals` are extend from `locals` in `new Layout` call. Return
-the view rendered.
+`ejsOpts`. Vars in `locals` are extend from `globalsLocals` in `new Layout` call.
+Return the view rendered.
 
 ##### Arguments
  Name       | Type      | Description
@@ -55,7 +55,7 @@ the view rendered.
 
 ##### Example
 ```js
-var layout   = new Layout.get('./myviews', { appname: 'My App' });
+var layout   = new Layout('./myviews', { appname: 'My App' });
 var rendered = layout.render('myview.ejs', { message: 'Hello world' });
 // Render ./myviews/myview.ejs file with vars appname='My app' and message='Hello world'.
 
@@ -75,7 +75,7 @@ render.
 ##### Example
 
 ```js
-var layout   = new Layout.get('./myviews');
+var layout   = new Layout('./myviews');
 var rendered = layout.render('myview.ejs', {  ly: layout }); // Render ./myviews/myview.ejs
 ```
 
@@ -112,7 +112,7 @@ view. Return the view rendered.
 ##### Example
 
 ```js
-var layout   = new Layout.get('./myviews');
+var layout   = new Layout('./myviews');
 var rendered = layout.render('myview.ejs', {  ly: layout }); // Render ./myviews/myview.ejs
 ```
 
@@ -135,25 +135,79 @@ Result:
 <p>Luke: Nooooo!!!</p>
 ```
 
-#### `layout.engine(as = 'layout')`
-Return a callback to set in a engine render. This engine will have a global var
-called as indicated `as` param. Return a function.
+#### `layout.engine(globalsLocals = {}, transform = null)`
+Return a callback to set in a engine render. The views will be render with at least
+globalsLocals vars. the `transform` params allow custom how vars will be available
+in the view.
 
 ##### Arguments
- Name | Type      | Description
-------|-----------|-------------
- `as` | `string`  | Varname to instance layout to render.
+ Name            | Type       | Description
+-----------------|------------|-------------
+ `globalsLocals` | `object`   | Vars to all views.
+ `transform`     | `function` | Function to custom how vars will be available
+in the view.
 
 ##### Example
 ```js
 var app = express();
-app.engine('ejs', Layout.engine('ly'));
 app.set('view engine', 'ejs');
 app.set('views', 'myviews'); // Optional.
 
+// Option 1
+app.engine('ejs', Layout.engine());
+
+// Option 2
+app.engine('ejs', Layout.engine({
+  myVar: 'myValue'
+}));
+
+// Option 3
+app.engine('ejs', Layout.engine(function (locals, layout) {
+  return {
+    ly: layout,
+    vars: locals
+  };
+}));
+
+// Option 4
+app.engine('ejs', Layout.engine({
+  myVar: 'myValue'
+}, function (locals, layout) {
+  return {
+    ly: layout,
+    vars: locals
+  };
+}));
+
 app.get('/', function (req, res) {
-  res.render('myview'); // myview.ejs in views folder set in express app.
+  // myview.ejs in views folder set in express app.
+  res.render('myview', {
+    displayName: 'Alexander'
+  });
 });
+```
+
+```html
+<!-- myviews/myview.ejs -->
+
+<!-- Option 1 -->
+  <%= displayName %> // 'Alexander'
+  <%= myVar %> // Generate an error
+
+<!-- Option 2 -->
+  <%= displayName %> // 'Alexander'
+  <%= myVar %> // 'myValue'
+
+<!-- Option 3 -->
+  <% ly.parent('mytemplate') %>
+  <%= vars.displayName %> // 'Alexander'
+  <%= vars.myVar %> // undefined
+
+<!-- Option 4 -->
+  <% ly.parent('mytemplate') %>
+  <%= vars.displayName %> // 'Alexander'
+  <%= vars.myVar %> // 'myValue'
+
 ```
 
 ### Troubles

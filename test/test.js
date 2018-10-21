@@ -100,13 +100,17 @@ describe('Layout', () => {
 
   });
 
-  describe('Layout.engine', () => {
+  describe('engine setup ok', () => {
     const api = supertestp('http://localhost:3000');
+
+    let forceTransformReturn = true;
     const app = express();
     let server;
 
     app.set('view engine', 'ejs');
-    app.engine('ejs', Layout.engine('layout'));
+    app.engine('ejs', Layout.engine({}, (locals, layout) => {
+      if (forceTransformReturn) return locals;
+    }));
 
     before((done) => {
       server = app.listen(3000, done);
@@ -115,7 +119,7 @@ describe('Layout', () => {
     it('response with a rendered view', (done) => {
 
       const filepathBase = '04-engine';
-      const fileapthEjs  = filepathBase + '.ejs';
+      const fileapthEjs  = filepathBase;
       const fileapthHTml = path.resolve(__dirname, 'views', filepathBase + '.html');
       const resultMustBe = fs.readFileSync(fileapthHTml, 'utf8');
 
@@ -129,10 +133,29 @@ describe('Layout', () => {
 
     });
 
+    it('return ok when transform return undefined', (done) => {
+
+      forceTransformReturn = false;
+      const filepathBase = '04-engine';
+      const fileapthEjs  = filepathBase;
+      const fileapthHTml = path.resolve(__dirname, 'views', filepathBase + '.html');
+      const resultMustBe = fs.readFileSync(fileapthHTml, 'utf8');
+
+      app.get('/', function (req, res) {
+        res.render(path.resolve(__dirname, 'views', fileapthEjs));
+        forceTransformReturn = true;
+      });
+
+      api.get('/')
+      .expect('Content-Type', /text\/html/)
+      .expect(200, resultMustBe, done);
+
+    });
+
     it('error rendering', (done) => {
 
       const filepathBase = '05-error';
-      const fileapthEjs  = filepathBase + '.ejs';
+      const fileapthEjs  = filepathBase;
 
       app.get('/error', function (req, res) {
         res.render(path.resolve(__dirname, 'views', fileapthEjs), () => {
@@ -147,6 +170,48 @@ describe('Layout', () => {
 
     after(() => {
       server.close();
+    });
+
+  });
+
+  describe('engine setup without globalsLocals', () => {
+
+    it('engine setup first param can be a transform', () => {
+      const app = express();
+      app.set('view engine', 'ejs');
+      app.engine('ejs', Layout.engine((locals, layout) => locals));
+    });
+
+  });
+
+  describe('engine setup error', () => {
+
+    it('error globalsLocals musb be a object', () => {
+
+      const app = express();
+      app.set('view engine', 'ejs');
+
+      try {
+        app.engine('ejs', Layout.engine('this is not a object'));
+        assert(false, 'a error must be throwed');
+      } catch (err) {
+        expect(err.code).to.equal('INVALID_GLOBAL_LOCALS');
+      }
+
+    });
+
+    it('error transform musb be a function', () => {
+
+      const app = express();
+      app.set('view engine', 'ejs');
+
+      try {
+        app.engine('ejs', Layout.engine({}, {}));
+        assert(false, 'a error must be throwed');
+      } catch (err) {
+        expect(err.code).to.equal('INVALID_TRANSFORM_LOCALS_FUNCTION');
+      }
+
     });
 
   });
