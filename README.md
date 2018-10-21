@@ -27,8 +27,7 @@ in the view.
  Name            | Type       | Description
 -----------------|------------|-------------
  `globalsLocals` | `object`   | Vars to all views.
- `transform`     | `function` | Function to custom how vars will be available
-in the view.
+ `transform`     | `function` | Function to custom how vars will be available in the view.
 
 ##### Example
 ```js
