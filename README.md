@@ -228,7 +228,7 @@ app.get('/', function (req, res) {
 
 ```
 
-### Troubles
+## Troubles
 
 If you have any kind of trouble with it, just let me now by raising an issue on
 the GitHub issue tracker here:
