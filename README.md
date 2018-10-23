@@ -41,7 +41,7 @@ var layout = new Layout({
 });
 
 // Option 3
-app.engine('ejs', Layout.engine(function (locals, layout) {
+var layout = new Layout(function (locals, layout) {
   return {
     ly: layout,
     vars: locals
